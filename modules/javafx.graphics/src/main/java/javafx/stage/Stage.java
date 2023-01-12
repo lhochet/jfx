@@ -1148,7 +1148,11 @@ public class Stage extends Window {
             boolean rtl = scene != null && scene.getEffectiveNodeOrientation() == NodeOrientation.RIGHT_TO_LEFT;
 
             StageStyle stageStyle = getStyle();
-            if (stageStyle == StageStyle.TRANSPARENT) {
+            if (stageStyle == StageStyle.TRANSPARENT 
+                    || stageStyle == StageStyle.APPBAR_BOTTOM_TRANSPARENT
+                    || stageStyle == StageStyle.APPBAR_LEFT_TRANSPARENT
+                    || stageStyle == StageStyle.APPBAR_RIGHT_TRANSPARENT
+                    || stageStyle == StageStyle.APPBAR_TOP_TRANSPARENT) {
                 @SuppressWarnings("removal")
                 final SecurityManager securityManager =
                         System.getSecurityManager();
