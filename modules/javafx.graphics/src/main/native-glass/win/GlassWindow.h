@@ -32,7 +32,15 @@
 
 class GlassWindow : public BaseWnd, public ViewContainer {
 public:
-    GlassWindow(jobject jrefThis, bool isTransparent, bool isDecorated, bool isUnified, HWND parentOrOwner);
+    enum AppBarBorder {
+        LEFT,
+        TOP,
+        RIGHT,
+        BOTTOM,
+        NA
+    };
+    
+    GlassWindow(jobject jrefThis, bool isTransparent, bool isDecorated, bool isUnified, bool isAppBar, AppBarBorder appBarBorder, HWND parentOrOwner);
     virtual ~GlassWindow();
 
     static GlassWindow* FromHandle(HWND hWnd) {
@@ -60,7 +68,10 @@ public:
     inline bool IsTransparent() { return m_isTransparent; }
     inline bool IsResizable() { return m_isResizable; }
     inline bool IsDecorated() { return m_isDecorated; }
+    inline bool IsAppBar()  { return m_isAppBar; }
     inline virtual bool IsGlassWindow() { return true; }
+
+    inline AppBarBorder GetAppBarBorder() { return m_appBarBorder; }
 
     bool SetResizable(bool resizable);
 
@@ -144,6 +155,8 @@ private:
     const bool m_isTransparent;
     const bool m_isDecorated;
     const bool m_isUnified;
+    const bool m_isAppBar;
+    const AppBarBorder m_appBarBorder;
 
     bool m_isResizable;
 
@@ -184,6 +197,10 @@ private:
     void HandleDPIEvent(WPARAM wParam, LPARAM lParam);
     bool HandleCommand(WORD cmdID);
     void HandleFocusDisabledEvent();
+
+    // LH
+    UINT LHHandleHitTest(HWND hwnd, WPARAM wParam, LPARAM lParam);
+
 };
 
 
