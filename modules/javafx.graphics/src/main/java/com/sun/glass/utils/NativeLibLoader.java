@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010, 2022, Oracle and/or its affiliates. All rights reserved.
+ * Copyright (c) 2010, 2023, Oracle and/or its affiliates. All rights reserved.
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS FILE HEADER.
  *
  * This code is free software; you can redistribute it and/or modify it
@@ -23,6 +23,8 @@
  * questions.
  */
 package com.sun.glass.utils;
+
+import com.sun.javafx.PlatformUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -173,8 +175,7 @@ public class NativeLibLoader {
                 //is recognized by existence of JNI_OnLoad_libraryname() C function.
                 //If libraryname contains hyphen, it needs to be translated
                 //to underscore to form valid C function indentifier.
-                if ("ios".equals(System.getProperty("os.name").toLowerCase(Locale.ROOT))
-                        && libraryName.contains("-")) {
+                if (PlatformUtil.isIOS() && libraryName.contains("-")) {
                     libraryName = libraryName.replace("-", "_");
                     try {
                         System.loadLibrary(libraryName);
@@ -336,13 +337,12 @@ public class NativeLibLoader {
         }
 
         // Set the native directory based on the OS
-        String osName = System.getProperty("os.name");
         String relativeDir = null;
-        if (osName.startsWith("Windows")) {
+        if (PlatformUtil.isWindows()) {
             relativeDir = "bin/javafx";
-        } else if (osName.startsWith("Mac")) {
+        } else if (PlatformUtil.isMac()) {
             relativeDir = "lib";
-        } else if (osName.startsWith("Linux")) {
+        } else if (PlatformUtil.isLinux()) {
             relativeDir = "lib";
         }
 
@@ -357,13 +357,12 @@ public class NativeLibLoader {
         int lastIndexOfSlash = Math.max(tmpStr.lastIndexOf('/'), tmpStr.lastIndexOf('\\'));
 
         // Set the native directory based on the OS
-        String osName = System.getProperty("os.name");
         String relativeDir = null;
-        if (osName.startsWith("Windows")) {
+        if (PlatformUtil.isWindows()) {
             relativeDir = "../bin";
-        } else if (osName.startsWith("Mac")) {
+        } else if (PlatformUtil.isMac()) {
             relativeDir = ".";
-        } else if (osName.startsWith("Linux")) {
+        } else if (PlatformUtil.isLinux()) {
             relativeDir = ".";
         }
 
@@ -394,14 +393,13 @@ public class NativeLibLoader {
                 }
 
                 // Set the lib prefix and suffix based on the OS
-                String osName = System.getProperty("os.name");
-                if (osName.startsWith("Windows")) {
+                if (PlatformUtil.isWindows()) {
                     libPrefix = "";
                     libSuffix = ".dll";
-                } else if (osName.startsWith("Mac")) {
+                } else if (PlatformUtil.isMac()) {
                     libPrefix = "lib";
                     libSuffix = ".dylib";
-                } else if (osName.startsWith("Linux")) {
+                } else if (PlatformUtil.isLinux()) {
                     libPrefix = "lib";
                     libSuffix = ".so";
                 }
